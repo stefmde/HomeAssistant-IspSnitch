@@ -1,0 +1,64 @@
+---
+pingTestConfiguration:
+  debug:
+    name: Debug
+    description: Used to provide more info in the logs
+  enabled:
+    name: Enabled
+    description: Can enable or disable the function
+  address:
+    name: Address
+    description: The address to ping against
+  timeoutMs:
+    name: Timeout in ms
+    description: The timeout in ms how log to wait for a ping to came back
+  secondsBetween:
+    name: Seconds between pings
+    description: The time in seconds for how long to wait before sending the next ping
+speedTestConfiguration:
+  debug:
+    name: Debug
+    description: Used to provide more info in the logs
+  enabled:
+    name: Enabled
+    description: Can enable or disable the function
+  minutesBetween:
+    name: Minutes between speed tests
+    description: The time in minutes for how long to wait before starting the next speed test
+  forceServerById:
+    name: Force specific server by id
+    description: If needed you can disable the auto server select by setting a server id here
+  forceServerByHostName:
+    name: Force specific server by it's host name
+    description: If needed you can disable the auto server select by setting a servers host name here
+  forceInterfaceByName:
+    name: Force specific interface by it's name
+    description: If needed you can disable the auto inferface select by setting a interfaces name here
+storageConfiguration:
+  debug:
+    name: Debug
+    description: Used to provide more info in the logs
+  enabled:
+    name: Enabled
+    description: Can enable or disable the function
+  url:
+    name: InfluxDB Url
+    description: The url of the influxDB to use
+  token:
+    name: Login token
+    description: The token to login (token OR userName/userPassword required)
+  userName:
+    name: User Name
+    description: The username to login (token OR userName/userPassword required)
+  userPassword:
+    name: User Password
+    description: The userpassword to login (token OR userName/userPassword required)
+  database:
+    name: Database
+    description: The database to store the data in
+  storageType:
+    name: Storage Type
+    description: Sets how much data/info is saved
+  source:
+    name: Source Device
+    description: Specifies a device as source to know from where the tests were executed

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Title>ISP Snitch</Title>
+        <Copyright>StefmDE 2024</Copyright>
+        <RepositoryType>git</RepositoryType>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <Company>StefmDE</Company>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\PingTest\PingTest.csproj" />
+      <ProjectReference Include="..\SpeedTest\SpeedTest.csproj" />
+      <ProjectReference Include="..\Storage\Storage.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
+
+</Project>
