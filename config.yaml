@@ -1,7 +1,7 @@
 ---
 name: "ISP Snitch"
-description: "Tracks your internet stats"
-version: "1.0.19"
+description: "Addon for HomeAssistent to track your internet connection and store it in InfluxDB"
+version: "1.0.20"
 slug: "isp_snitch"
 init: false
 startup: application
