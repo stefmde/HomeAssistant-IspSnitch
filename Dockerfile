@@ -10,7 +10,7 @@ RUN apt-get update \
 RUN speedtest --accept-license --accept-gdpr --progress=no
 
 # BUILD
-COPY IspSnitch /build
+COPY Sources /build
 WORKDIR /build
 RUN dotnet restore IspSnitch/IspSnitch.csproj
 RUN dotnet build IspSnitch/IspSnitch.csproj -c Release -o output --property WarningLevel=0
