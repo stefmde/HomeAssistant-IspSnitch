@@ -14,6 +14,7 @@ public class Storage : IDisposable
 	private readonly InfluxDBClient _influxClient;
 	private readonly WriteApiAsync _influxWriteApi;
 
+	// TODO disable storing if set so
 	public Storage(StorageConfiguration storageConfiguration)
 	{
 		_storageConfiguration = storageConfiguration;
