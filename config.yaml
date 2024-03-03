@@ -1,7 +1,8 @@
 ---
 name: "ISP Snitch"
 description: "Addon for HomeAssistent to track your internet connection and store it in InfluxDB"
-version: "1.0.20"
+version: "1.0.21"
+url: https://github.com/stefmde/HomeAssistant-IspSnitch
 slug: "isp_snitch"
 init: false
 startup: application
@@ -11,8 +12,6 @@ arch:
   - armhf
   - armv7
   - i386
-ports:
-  8000/tcp: 8000
 options:
   pingTestConfiguration:
     debug: false
