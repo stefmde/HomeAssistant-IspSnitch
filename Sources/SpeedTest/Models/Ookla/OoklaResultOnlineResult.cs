@@ -1,3 +1,5 @@
+using System;
+
 namespace SpeedTest.Models.Ookla;
 
 public class OoklaResultOnlineResult

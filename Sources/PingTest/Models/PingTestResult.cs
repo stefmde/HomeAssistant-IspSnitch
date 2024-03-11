@@ -1,3 +1,5 @@
+using System;
+
 namespace PingTest.Models;
 
 public class PingTestResult

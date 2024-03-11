@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Core.Models.Configuration.Sinks;
 using InfluxDB.Client.Writes;
 using PingTest.Models;

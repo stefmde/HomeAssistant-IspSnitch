@@ -1,3 +1,4 @@
+using System;
 using SpeedTest.Models.Ookla;
 
 namespace SpeedTest.Models;

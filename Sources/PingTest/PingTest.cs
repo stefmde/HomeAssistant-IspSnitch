@@ -1,4 +1,6 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 using Core.Models.Configuration.Tests.PingTest;
 using PingTest.Models;
 

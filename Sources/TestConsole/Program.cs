@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System;
 using Core.Models.Configuration;
 using Core.Models.Configuration.Sinks;
 using Core.Models.Configuration.Sinks.HomeAssistantSink;
@@ -12,7 +13,6 @@ using Core.Models.Configuration.Tests.SpeedTest;
  * Connection: isp-snitch-dev-connection
  * User: isp-snitch-dev-user
  * Password: isp-snitch-dev-user
- * 
  */
 
 var config = new IspSnitchConfiguration
@@ -21,6 +21,10 @@ var config = new IspSnitchConfiguration
 	{
 		Enabled = true,
 		Debug = true,
+		SecondsBetween = 1,
+		WriteInfluxDbEnabled = false,
+		WriteToHomeAssistantEnabled = true,
+		WriteToHomeAssistantEverySeconds = 10,
 		Address = "google.com",
 		TimeoutMs = 10000
 	},
@@ -28,23 +32,28 @@ var config = new IspSnitchConfiguration
 	{
 		Enabled = true,
 		Debug = true,
+		SecondsBetween = 300,
+		WriteInfluxDbEnabled = false,
+		WriteToHomeAssistantEnabled = false,
+		WriteToHomeAssistantEverySeconds = 10,
 	},
 	InfluxDbSinkConfiguration = new InfluxDbSinkConfiguration
 	{
 		Enabled = true,
 		Debug = true,
+		SinkAmountType = SinkAmountType.Full,
 		Url = "http://192.168.1.12:8086",
 		Token = "",
 		UserName = "isp-snitch-dev-user",
 		UserPassword = "isp-snitch-dev-user",
 		Database = "isp-snitch-dev-db",
 		Source = "Dev",
-		SinkAmountType = SinkAmountType.Full
 	},
 	HomeAssistantSinkConfiguration = new HomeAssistantSinkConfiguration
 	{
 		Enabled = true,
-		Debug = true
+		Debug = true,
+		SinkAmountType = SinkAmountType.Full
 	}
 };
 

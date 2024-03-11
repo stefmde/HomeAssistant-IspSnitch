@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace HomeAssistantSink.Models;
 
 public class EntityData

@@ -1,2 +1,2 @@
 # ISP Snitch
-Addon for HomeAssistent to track your internet connection and store it in InfluxDB
+Addon for Home Assistant to track your internet connection and store it in InfluxDB

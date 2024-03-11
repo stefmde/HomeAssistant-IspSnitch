@@ -1,4 +1,7 @@
-﻿using Core.Models.Configuration.Sinks.InfluxDbSink;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Core.Models.Configuration.Sinks.InfluxDbSink;
 using InfluxDB.Client;
 using InfluxDB.Client.Writes;
 using InfluxDbSink.Helpers;

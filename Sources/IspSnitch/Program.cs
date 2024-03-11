@@ -1,6 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Core.Helper;
 using IspSnitch.Helper;
 

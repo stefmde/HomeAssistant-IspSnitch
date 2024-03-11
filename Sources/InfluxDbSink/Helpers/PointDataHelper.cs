@@ -1,3 +1,4 @@
+using System;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 

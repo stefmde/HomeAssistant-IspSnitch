@@ -1,3 +1,4 @@
+using System;
 using Core.Models.Configuration.Sinks;
 
 namespace InfluxDbSink.Models;
