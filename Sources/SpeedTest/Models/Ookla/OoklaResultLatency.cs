@@ -1,5 +1,5 @@
 
-namespace Speedtest.Models.Ookla;
+namespace SpeedTest.Models.Ookla;
 
 public class OoklaResultLatency
 {

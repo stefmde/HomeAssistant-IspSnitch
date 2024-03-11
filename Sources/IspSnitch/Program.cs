@@ -3,15 +3,15 @@
 
 using Core.Helper;
 using IspSnitch.Helper;
-using Speedtest;
 
 Console.WriteLine("ISP Snitch");
 Console.WriteLine();
 Console.WriteLine("init...");
 var ispConfig = await ConfigurationHelper.GetConfiguration();
-var storage = new Storage.Storage(ispConfig.StorageConfiguration);
+var influxDbSink = new InfluxDbSink.InfluxDbSink(ispConfig.InfluxDbSinkConfiguration);
+var homeAssistantSink = new HomeAssistantSink.HomeAssistantSink(ispConfig.HomeAssistantSinkConfiguration);
 var pingTest = new PingTest.PingTest(ispConfig.PingTestConfiguration);
-var speedTest = new SpeedTest(ispConfig.SpeedTestConfiguration);
+var speedTest = new SpeedTest.SpeedTest(ispConfig.SpeedTestConfiguration);
 Console.WriteLine("init... done.");
 Console.WriteLine("Start Testing");
 Console.WriteLine();
@@ -21,19 +21,33 @@ async Task PingTest()
 	if (ispConfig.PingTestConfiguration.Enabled)
 	{
 		var config = ispConfig.PingTestConfiguration;
+		var nextHomeAssistantSinkStore = DateTime.MinValue;
 		Console.WriteLine($"Starting PingTests to '{config.Address}' with Timeout '{config.TimeoutMs}', SecondsBetween '{config.SecondsBetween}' and Debug '{config.Debug}'");
 		while (true)
 		{
+			// TEST
 			if(config.Debug) Console.WriteLine("PingTesting... ");
-			var pingTestResult = await pingTest.Test();
-			if (pingTestResult.IsSuccess)
+			var testResult = await pingTest.Test();
+			if (testResult.IsSuccess)
 			{
-				Console.WriteLine($"Ping {pingTestResult.RoundtripTime} ms");
-				await storage.StorePingTestData(pingTestResult);
+				Console.WriteLine($"Ping {testResult.RoundtripTime} ms");
+				
+				// STORE - InfluxDB
+				if (config.WriteInfluxDbEnabled)
+				{
+					await influxDbSink.StorePingTestData(testResult);
+				}
+				
+				// STORE - Home Assistant
+				if (config.WriteToHomeAssistantEnabled && nextHomeAssistantSinkStore < DateTime.UtcNow)
+				{
+					await homeAssistantSink.StorePingTestData(testResult);
+					nextHomeAssistantSinkStore = DateTime.UtcNow.AddSeconds(config.WriteToHomeAssistantEverySeconds);
+				}
 			}
 			else
 			{
-				Console.WriteLine( $"Ping FAILED: {pingTestResult.Status}" );
+				Console.WriteLine( $"Ping FAILED: {testResult.Status}" );
 			}
 			
 			Thread.Sleep(config.SecondsBetween * 1000);
@@ -47,26 +61,26 @@ async Task SpeedTest()
 	if (ispConfig.SpeedTestConfiguration.Enabled)
 	{
 		var config = ispConfig.SpeedTestConfiguration;
-		Console.WriteLine($"Starting SpeedTests with MinutesBetween '{config.MinutesBetween}' and Debug '{config.Debug}'");
+		Console.WriteLine($"Starting SpeedTests with SecondsBetween '{config.SecondsBetween}' and Debug '{config.Debug}'");
 		while (true)
 		{
 			if(config.Debug) Console.WriteLine("SpeedTesting...");
-			var speedtestResult = await speedTest.Test();
+			var testResult = await speedTest.Test();
 
-			if (speedtestResult.IsSuccess)
+			if (testResult.IsSuccess)
 			{
-				if (speedtestResult.OoklaResult is not null)
+				if (testResult.OoklaResult is not null)
 				{
-					Console.WriteLine($"SpeedTest {speedtestResult.OoklaResult.Ping.Latency} ms; Down {speedtestResult.OoklaResult?.Download.Bandwidth.ToReadableSpeedUnit()}; Up {speedtestResult.OoklaResult.Upload.Bandwidth.ToReadableSpeedUnit()}" );
-					await storage.StoreSpeedTestData(speedtestResult);
+					Console.WriteLine($"SpeedTest {testResult.OoklaResult.Ping.Latency} ms; Down {testResult.OoklaResult?.Download.Bandwidth.ToReadableSpeedUnit()}; Up {testResult.OoklaResult.Upload.Bandwidth.ToReadableSpeedUnit()}" );
+					await influxDbSink.StoreSpeedTestData(testResult);
 				}
 			}
 			else
 			{
-				Console.WriteLine($"SpeedTest FAILED: {speedtestResult.Error}");
+				Console.WriteLine($"SpeedTest FAILED: {testResult.Error}");
 			}
 			
-			Thread.Sleep( config.MinutesBetween * 60 * 1000);
+			Thread.Sleep( config.SecondsBetween * 60 * 60 * 1000);
 		}
 	}
 	Console.WriteLine("SpeedTests NOT enabled");

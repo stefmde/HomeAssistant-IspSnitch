@@ -1,7 +1,7 @@
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 
-namespace Storage.Helpers;
+namespace InfluxDbSink.Helpers;
 
 public class PointDataHelper
 {

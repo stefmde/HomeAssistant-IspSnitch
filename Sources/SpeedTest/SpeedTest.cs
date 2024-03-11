@@ -1,19 +1,19 @@
 using System.Diagnostics;
 using System.Text;
-using Core.Models.Configuration.Speedtest;
+using Core.Models.Configuration.Tests.SpeedTest;
 using Newtonsoft.Json;
-using Speedtest.Models;
-using Speedtest.Models.Ookla;
+using SpeedTest.Models;
+using SpeedTest.Models.Ookla;
 
-namespace Speedtest;
+namespace SpeedTest;
 
 public class SpeedTest
 {
-	private readonly SpeedTestConfiguration _configuration;
+	private readonly SpeedTestConfiguration _baseConfiguration;
 
-	public SpeedTest(SpeedTestConfiguration configuration)
+	public SpeedTest(SpeedTestConfiguration baseConfiguration)
 	{
-		_configuration = configuration;
+		_baseConfiguration = baseConfiguration;
 	}
 
 	public async Task<SpeedTestResult> Test()
@@ -22,10 +22,10 @@ public class SpeedTest
 		var argumentsBuilder = new StringBuilder();
 		argumentsBuilder.Append("--progress=no ");
 		argumentsBuilder.Append("--format=json");
-		argumentsBuilder.Append(_configuration.Debug ? "-pretty " : " ");
-		argumentsBuilder.Append(_configuration.ForceServerById > 0 ? $"–server-id={_configuration.ForceServerById} " : string.Empty);
-		argumentsBuilder.Append(string.IsNullOrWhiteSpace(_configuration.ForceServerByHostName) ? string.Empty : $"–host={_configuration.ForceServerByHostName} ");
-		argumentsBuilder.Append(string.IsNullOrWhiteSpace(_configuration.ForceInterfaceByName) ? string.Empty : $"–interface={_configuration.ForceInterfaceByName} ");
+		argumentsBuilder.Append(_baseConfiguration.Debug ? "-pretty " : " ");
+		argumentsBuilder.Append(_baseConfiguration.ForceServerById > 0 ? $"–server-id={_baseConfiguration.ForceServerById} " : string.Empty);
+		argumentsBuilder.Append(string.IsNullOrWhiteSpace(_baseConfiguration.ForceServerByHostName) ? string.Empty : $"–host={_baseConfiguration.ForceServerByHostName} ");
+		argumentsBuilder.Append(string.IsNullOrWhiteSpace(_baseConfiguration.ForceInterfaceByName) ? string.Empty : $"–interface={_baseConfiguration.ForceInterfaceByName} ");
 		
 		var startInfo = new ProcessStartInfo
 		{
@@ -35,7 +35,7 @@ public class SpeedTest
 			RedirectStandardError = true
 		};
 
-		if (_configuration.Debug)
+		if (_baseConfiguration.Debug)
 		{
 			result.DebugAppend($"Executed: '{startInfo.FileName}' with arguments: '{startInfo.Arguments}'");
 		}
@@ -46,7 +46,7 @@ public class SpeedTest
 			await proc.WaitForExitAsync();
 			var resultJson = await proc.StandardOutput.ReadToEndAsync();
 			
-			if (_configuration.Debug)
+			if (_baseConfiguration.Debug)
 			{
 				result.DebugAppend($"Result Json: {resultJson}");
 			}
@@ -58,7 +58,7 @@ public class SpeedTest
 			{
 				result.OoklaResult = JsonConvert.DeserializeObject<OoklaResult>(resultJson);
 
-				if (_configuration.Debug)
+				if (_baseConfiguration.Debug)
 				{
 					result.DebugAppend("Readable:");
 					result.DebugAppend(result.OoklaResult.ToString());

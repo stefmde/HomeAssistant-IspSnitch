@@ -1,9 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Core.Models.Configuration;
-using Core.Models.Configuration.Pingtest;
-using Core.Models.Configuration.Speedtest;
-using Core.Models.Configuration.Storage;
+using Core.Models.Configuration.Sinks;
+using Core.Models.Configuration.Sinks.HomeAssistantSink;
+using Core.Models.Configuration.Sinks.InfluxDbSink;
+using Core.Models.Configuration.Tests.PingTest;
+using Core.Models.Configuration.Tests.SpeedTest;
 
 /*
  * Database: isp-snitch-dev-db
@@ -17,18 +19,19 @@ var config = new IspSnitchConfiguration
 {
 	PingTestConfiguration = new PingTestConfiguration
 	{
-		Debug = true,
 		Enabled = true,
+		Debug = true,
 		Address = "google.com",
 		TimeoutMs = 10000
 	},
 	SpeedTestConfiguration = new SpeedTestConfiguration
 	{
+		Enabled = true,
 		Debug = true,
-		Enabled = true
 	},
-	StorageConfiguration = new StorageConfiguration
+	InfluxDbSinkConfiguration = new InfluxDbSinkConfiguration
 	{
+		Enabled = true,
 		Debug = true,
 		Url = "http://192.168.1.12:8086",
 		Token = "",
@@ -36,11 +39,16 @@ var config = new IspSnitchConfiguration
 		UserPassword = "isp-snitch-dev-user",
 		Database = "isp-snitch-dev-db",
 		Source = "Dev",
-		StoreType = StoreType.Full
+		SinkAmountType = SinkAmountType.Full
+	},
+	HomeAssistantSinkConfiguration = new HomeAssistantSinkConfiguration
+	{
+		Enabled = true,
+		Debug = true
 	}
 };
 
-var storage = new Storage.Storage(config.StorageConfiguration);
+var storage = new InfluxDbSink.InfluxDbSink(config.InfluxDbSinkConfiguration);
 
 var pingtest = new PingTest.PingTest(config.PingTestConfiguration);
 var pingtestResult = await pingtest.Test();

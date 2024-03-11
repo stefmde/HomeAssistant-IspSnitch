@@ -1,6 +1,6 @@
-using Speedtest.Models.Ookla;
+using SpeedTest.Models.Ookla;
 
-namespace Speedtest.Models;
+namespace SpeedTest.Models;
 
 public class SpeedTestResult
 {

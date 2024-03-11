@@ -1,7 +1,8 @@
 using Core.Models.Configuration;
-using Core.Models.Configuration.Pingtest;
-using Core.Models.Configuration.Speedtest;
-using Core.Models.Configuration.Storage;
+using Core.Models.Configuration.Sinks;
+using Core.Models.Configuration.Sinks.InfluxDbSink;
+using Core.Models.Configuration.Tests.PingTest;
+using Core.Models.Configuration.Tests.SpeedTest;
 using Newtonsoft.Json;
 
 namespace IspSnitch.Helper;
@@ -37,9 +38,9 @@ public static class ConfigurationHelper
 			{
 				Debug = false,
 				Enabled = true,
-				MinutesBetween = 2
+				SecondsBetween = 120
 			},
-			StorageConfiguration = new StorageConfiguration
+			InfluxDbSinkConfiguration = new InfluxDbSinkConfiguration
 			{
 				Debug = true,
 				Url = "http://192.168.1.12:8086",
@@ -48,7 +49,7 @@ public static class ConfigurationHelper
 				UserPassword = "isp-snitch-dev-user",
 				Database = "isp-snitch-dev-db",
 				Source = "Dev",
-				StoreType = StoreType.Full
+				SinkAmountType = SinkAmountType.Full
 			}
 		};
 		Console.WriteLine("done.");

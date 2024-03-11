@@ -1,9 +1,13 @@
-namespace Core.Models.Configuration.Storage;
+namespace Core.Models.Configuration.Sinks.InfluxDbSink;
 
-public class StorageConfiguration
+public class InfluxDbSinkConfiguration : ISinkBaseConfiguration
 {
 	public bool Debug { get; set; }
 	
+	public bool Enabled { get; set; }
+	
+	public SinkAmountType SinkAmountType { get; set; }
+
 	public string Url { get; set; }
 	
 	public string Token { get; set; }
@@ -13,8 +17,6 @@ public class StorageConfiguration
 	public string UserPassword { get; set; }
 	
 	public string Database { get; set; }
-	
-	public StoreType StoreType { get; set; }
 	
 	public string Source { get; set; }
 }

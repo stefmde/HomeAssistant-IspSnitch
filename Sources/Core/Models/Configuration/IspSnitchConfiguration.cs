@@ -1,6 +1,7 @@
-using Core.Models.Configuration.Pingtest;
-using Core.Models.Configuration.Speedtest;
-using Core.Models.Configuration.Storage;
+using Core.Models.Configuration.Sinks.HomeAssistantSink;
+using Core.Models.Configuration.Sinks.InfluxDbSink;
+using Core.Models.Configuration.Tests.PingTest;
+using Core.Models.Configuration.Tests.SpeedTest;
 
 namespace Core.Models.Configuration;
 
@@ -10,5 +11,7 @@ public class IspSnitchConfiguration
 	
 	public PingTestConfiguration PingTestConfiguration { get; set; }
 	
-	public StorageConfiguration StorageConfiguration { get; set; }
+	public InfluxDbSinkConfiguration InfluxDbSinkConfiguration { get; set; }
+	
+	public HomeAssistantSinkConfiguration HomeAssistantSinkConfiguration { get; set; }
 }

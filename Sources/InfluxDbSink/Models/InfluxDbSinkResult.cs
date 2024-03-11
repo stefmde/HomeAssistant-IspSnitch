@@ -1,8 +1,10 @@
-namespace Storage.Models;
+using Core.Models.Configuration.Sinks;
 
-public class StoreResult
+namespace InfluxDbSink.Models;
+
+public class InfluxDbSinkResult : ISinkBaseResult
 {
-	public bool IsSuccess { get; set; }
+	public bool Success { get; set; }
 	
 	public string Error { get; internal set; }
 	

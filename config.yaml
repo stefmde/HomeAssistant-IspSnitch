@@ -1,11 +1,12 @@
 ---
 name: "ISP Snitch"
-description: "Addon for HomeAssistent to track your internet connection and store it in InfluxDB"
+description: "Addon for Home Assistant to track your internet connection and store it in InfluxDB"
 version: "1.0.21"
 url: https://github.com/stefmde/HomeAssistant-IspSnitch
 slug: "isp_snitch"
 init: false
 startup: application
+homeassistant_api: true
 arch:
   - aarch64
   - amd64
@@ -14,40 +15,54 @@ arch:
   - i386
 options:
   pingTestConfiguration:
-    debug: false
     enabled: true
+    debug: false
+    secondsBetween: 1
     address: google.com
     timeoutMs: 1000
-    secondsBetween: 1
   speedTestConfiguration:
+    enabled: true
+    debug: false
+    secondsBetween: 300
+  influxDbSinkConfiguration:
     debug: false
     enabled: true
-    minutesBetween: 5
-  storageConfiguration:
+    storageType: Basic
+  homeAssistantSinkConfiguration:
     debug: false
     enabled: true
     storageType: Basic
 schema:
   pingTestConfiguration:
-    debug: bool
     enabled: bool
+    debug: bool
+    secondsBetween: int(1,)
+    writeInfluxDbEnabled: bool
+    writeToHomeAssistantEnabled: bool
+    writeToHomeAssistantEverySeconds: int(1,)
     address: str
     timeoutMs: int
-    secondsBetween: int(1,)
   speedTestConfiguration:
-    debug: bool
     enabled: bool
-    minutesBetween: int(1,)
+    debug: bool
+    secondsBetween: int(60,)
+    writeInfluxDbEnabled: bool
+    writeToHomeAssistantEnabled: bool
+    writeToHomeAssistantEverySeconds: int(1,)
     forceServerById: int(0,)?
     forceServerByHostName: str?
     forceInterfaceByName: str?
-  storageConfiguration:
-    debug: bool
+  influxDbSinkConfiguration:
     enabled: bool
+    debug: bool
+    storageType: list(Basic|Extended|Full)
     url: str
     token: str?
     userName: str?
     userPassword: password?
     database: str
-    storageType: list(Basic|Extended|Full)
     source: str
+  homeAssistantSinkConfiguration:
+    enabled: bool
+    debug: bool
+    storageType: list(Basic|Extended|Full)

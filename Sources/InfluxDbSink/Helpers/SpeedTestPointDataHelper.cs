@@ -1,20 +1,20 @@
-using Core.Models.Configuration.Storage;
+using Core.Models.Configuration.Sinks;
 using InfluxDB.Client.Writes;
-using Speedtest.Models;
-using Speedtest.Models.Ookla;
+using SpeedTest.Models;
+using SpeedTest.Models.Ookla;
 
-namespace Storage.Helpers;
+namespace InfluxDbSink.Helpers;
 
 public class SpeedTestPointDataHelper
 {
 	private readonly SpeedTestResult _speedTestResult;
-	private readonly StoreType _storeType;
+	private readonly SinkAmountType _sinkAmountType;
 	private readonly PointDataHelper _pointDataHelper;
 
-	public SpeedTestPointDataHelper(SpeedTestResult speedTestResult, StoreType storeType, string source)
+	public SpeedTestPointDataHelper(SpeedTestResult speedTestResult, SinkAmountType sinkAmountType, string source)
 	{
 		_speedTestResult = speedTestResult;
-		_storeType = storeType;
+		_sinkAmountType = sinkAmountType;
 		_pointDataHelper = new PointDataHelper("speedtest", source, _speedTestResult.CreatedUtc);
 	}
 	
@@ -53,12 +53,12 @@ public class SpeedTestPointDataHelper
 			return points;
 		}
 
-		if (_storeType >= StoreType.Basic)
+		if (_sinkAmountType >= SinkAmountType.Basic)
 		{
 			points.Add(_pointDataHelper.CreatePoint("package-loss-percentage", _speedTestResult.OoklaResult.PacketLoss));
 		}
 
-		if (_storeType >= StoreType.Extended)
+		if (_sinkAmountType >= SinkAmountType.Extended)
 		{
 			points.Add(_pointDataHelper.CreatePoint("isp", _speedTestResult.OoklaResult.Isp));
 		}
@@ -75,17 +75,17 @@ public class SpeedTestPointDataHelper
 			return points;
 		}
 
-		if (_storeType >= StoreType.Basic)
+		if (_sinkAmountType >= SinkAmountType.Basic)
 		{
 			points.Add(_pointDataHelper.CreatePoint("ping-ms", _speedTestResult.OoklaResult.Ping.Latency));
 		}
 
-		if (_storeType >= StoreType.Extended)
+		if (_sinkAmountType >= SinkAmountType.Extended)
 		{
 			points.Add(_pointDataHelper.CreatePoint("ping-jitter-ms", _speedTestResult.OoklaResult.Ping.Jitter));
 		}
 
-		if (_storeType >= StoreType.Full)
+		if (_sinkAmountType >= SinkAmountType.Full)
 		{
 			points.Add(_pointDataHelper.CreatePoint("ping-low-ms", _speedTestResult.OoklaResult.Ping.Low));
 			points.Add(_pointDataHelper.CreatePoint("ping-high-ms", _speedTestResult.OoklaResult.Ping.High));
@@ -103,18 +103,18 @@ public class SpeedTestPointDataHelper
 			return points;
 		}
 
-		if (_storeType >= StoreType.Basic)
+		if (_sinkAmountType >= SinkAmountType.Basic)
 		{
 			points.Add(_pointDataHelper.CreatePoint($"{direction}-bandwidth-bytes", data.Bandwidth.ToString()));
 		}
 
-		if (_storeType >= StoreType.Extended)
+		if (_sinkAmountType >= SinkAmountType.Extended)
 		{
 			points.Add(_pointDataHelper.CreatePoint($"{direction}-latency-iqm-ms", data.Latency.Iqm));
 			points.Add(_pointDataHelper.CreatePoint($"{direction}-latency-jitter-ms", data.Latency.Jitter));
 		}
 
-		if (_storeType >= StoreType.Full)
+		if (_sinkAmountType >= SinkAmountType.Full)
 		{
 			points.Add(_pointDataHelper.CreatePoint($"{direction}-bytes-transferred", data.Bytes.ToString()));
 			points.Add(_pointDataHelper.CreatePoint($"{direction}-elapsed-ms", data.Elapsed.ToString()));
@@ -134,12 +134,12 @@ public class SpeedTestPointDataHelper
 			return points;
 		}
 
-		if (_storeType >= StoreType.Extended)
+		if (_sinkAmountType >= SinkAmountType.Extended)
 		{
 			points.Add(_pointDataHelper.CreatePoint("interface-name", _speedTestResult.OoklaResult.Interface.Name));
 		}
 
-		if (_storeType >= StoreType.Full)
+		if (_sinkAmountType >= SinkAmountType.Full)
 		{
 			points.Add(_pointDataHelper.CreatePoint("interface-internal-ip", _speedTestResult.OoklaResult.Interface.InternalIp));
 			points.Add(_pointDataHelper.CreatePoint("interface-external-ip", _speedTestResult.OoklaResult.Interface.ExternalIp));
@@ -159,18 +159,18 @@ public class SpeedTestPointDataHelper
 			return points;
 		}
 
-		if (_storeType >= StoreType.Basic)
+		if (_sinkAmountType >= SinkAmountType.Basic)
 		{
 			points.Add(_pointDataHelper.CreatePoint("server-location", _speedTestResult.OoklaResult.Server.Location));
 			points.Add(_pointDataHelper.CreatePoint("server-country", _speedTestResult.OoklaResult.Server.Country));
 		}
 
-		if (_storeType >= StoreType.Extended)
+		if (_sinkAmountType >= SinkAmountType.Extended)
 		{
 			points.Add(_pointDataHelper.CreatePoint("server-name", _speedTestResult.OoklaResult.Server.Name));
 		}
 
-		if (_storeType >= StoreType.Full)
+		if (_sinkAmountType >= SinkAmountType.Full)
 		{
 			points.Add(_pointDataHelper.CreatePoint("server-id", _speedTestResult.OoklaResult.Server.Id));
 			points.Add(_pointDataHelper.CreatePoint("server-host", _speedTestResult.OoklaResult.Server.Host));
